@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=48
+#SBATCH --gres=gpu:8
+#SBATCH --time=18:00:00
+#SBATCH --mem-per-cpu=3600
+#SBATCH --partition=alpha
+#SBATCH --job-name=transfuser20
+#SBATCH --mail-type=end
+#SBATCH --mail-user=rajasekar.sankar@tu-dresden.de
+
+
+
+
+module load Anaconda3
+source $EBROOTANACONDA3/etc/profile.d/conda.sh
+conda activate tfuse2
+cd /beegfs/ws/1/rasa397c-Sankar/transfuser/team_code_transfuser
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6 OMP_NUM_THREADS=48 OPENBLAS_NUM_THREADS=1 torchrun --nnodes=1 --nproc_per_node=7 --max_restarts=0 --rdzv_id=1234576890 --rdzv_backend=c10d train.py --logdir log --root_dir /beegfs/.global1/ws/rasa397c-Sankar/transfuser/data_mini --parallel_training 1 --epochs 41 --batch_size 48 --id transfuser20

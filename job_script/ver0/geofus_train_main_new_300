@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:6
+#SBATCH --time=15:00:00
+#SBATCH --mem-per-gpu=60000
+#SBATCH --partition=alpha
+#SBATCH --job-name=geofus_train_main_new_300
+#SBATCH --mail-type=end
+#SBATCH --mail-user=rajasekar.sankar@tu-dresden.de
+
+module load release/23.04 Anaconda3
+source $EBROOTANACONDA3/etc/profile.d/conda.sh
+conda activate transCAL
+cd /home/h5/rasa397c/Sankar/transfuser/geofus_traindata1/affordance1
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5 python3 main.py --root_dir /data/horse/ws/rasa397c-Sankar/Multimodal/transfuser/model_ckpt/geofus_traindata --args_path /data/horse/ws/rasa397c-Sankar/transfuser/team_code_transfuser2/model_ckpt/models_2022/geometric_fusion/args.txt --save_path /data/horse/ws/rasa397c-Sankar/Multimodal/transfuser/model_ckpt/geofus_traindata/output --device cuda --batch_size 100

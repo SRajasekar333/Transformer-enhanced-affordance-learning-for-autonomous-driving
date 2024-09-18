@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:3
+#SBATCH --time=15:00:00
+#SBATCH --mem-per-gpu=60000
+#SBATCH --partition=alpha
+#SBATCH --job-name=job_train_main_new_300
+#SBATCH --mail-type=end
+#SBATCH --mail-user=rajasekar.sankar@tu-dresden.de
+
+module load release/23.04 Anaconda3
+source $EBROOTANACONDA3/etc/profile.d/conda.sh
+conda activate transCAL
+cd /home/h5/rasa397c/Sankar/transfuser/fullafford_traindata_new/affordance
+CUDA_VISIBLE_DEVICES=0,1,2 python3 main.py --root_dir /data/horse/ws/rasa397c-Sankar/Multimodal/transfuser/model_ckpt/job_fused_features_setting2_2workers_BS100_GPU8 --args_path /data/horse/ws/rasa397c-Sankar/transfuser/team_code_transfuser2/model_ckpt/models_2022/transfuser/args.txt --save_path /data/horse/ws/rasa397c-Sankar/Multimodal/transfuser/model_ckpt/job_fused_features_setting2_2workers_BS100_GPU8/output_new_withwt_300epoch --device cuda --batch_size 100
